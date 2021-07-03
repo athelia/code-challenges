@@ -25,3 +25,14 @@ def sum_even_fib(ceiling):
     return total
 
 print(sum_even_fib(32))
+
+def is_prime(x):
+    for i in range(x//2):
+        pass
+
+def largest_prime_factor(n):
+    for i in range(n/2):
+        if n % i == 0:
+            factor = n / i
+            if is_prime(factor):
+                return factor
