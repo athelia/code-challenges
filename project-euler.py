@@ -132,3 +132,10 @@ def square_of_sum(n):
 # c = b - a
 # print(a, b, c)
 
+def nth_prime(n):
+    if n == 1:
+        return 2
+    if n == 2:
+        return 3
+    else:
+        pass
