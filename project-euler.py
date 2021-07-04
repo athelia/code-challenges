@@ -113,3 +113,22 @@ def smallest_multiple(n):
 # actual solution is 232792560
 # function returns   465585120
 # extra *2 somewhere.... :( probably with the 4th power thingy
+# Perhaps a modulo approach instead? 
+
+def sum_of_squares(n):
+    total = 0
+    for i in range(1, n + 1):
+        total += (i ** 2)
+    return total
+
+def square_of_sum(n):
+    total = 0
+    for i in range(1, n + 1):
+        total += i
+    return (total ** 2)
+
+# a = sum_of_squares(100)
+# b = square_of_sum(100)
+# c = b - a
+# print(a, b, c)
+
