@@ -3,7 +3,7 @@ def sum_multiples(ceiling, multiple):
     terms = ceiling // multiple
     return multiple * (terms * (terms + 1)) / 2
 
-sum_fifteen = sum_multiples(999, 3) + sum_multiples(999, 5) - sum_multiples(999, 15)
+# sum_fifteen = sum_multiples(999, 3) + sum_multiples(999, 5) - sum_multiples(999, 15)
 # print(sum_fifteen)
 
 def fibonacci(n, memo={}):
@@ -19,7 +19,7 @@ def fibonacci(n, memo={}):
 # print(fibonacci(32)) #3524578
 def sum_even_fib(ceiling):
     total = 0
-    for i in range(ceiling + 1):
+    for i in range(ceiling + 1): #TODO: improved efficiency summing only every 3rd fib
         if fibonacci(i) % 2 == 0:
             total += fibonacci(i)
     return total
@@ -49,4 +49,24 @@ def largest_prime_factor(n):
             if is_prime(factor):
                 return factor
 
-print(largest_prime_factor(600851475143))
+# print(largest_prime_factor(600851475143))
+
+def is_palindrome(s):
+    for i in range(len(s) // 2 + 1):
+        if s[i] != s[len(s) - 1 - i]:
+            return False
+    return True
+
+# print(is_palindrome('racecar'))
+# print(is_palindrome(str(1001)))
+
+def find_palindrome_products(n):
+    """Largest palindrome product of two digits up to value n"""
+    products = []
+    for i in range(n, n//10, -1):
+        for j in range(n, n//10, -1):
+            if is_palindrome(str(i * j)):
+                products.append(i * j)
+    return max(products)
+
+print(find_palindrome_products(999))
