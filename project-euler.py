@@ -69,4 +69,47 @@ def find_palindrome_products(n):
                 products.append(i * j)
     return max(products)
 
-print(find_palindrome_products(999))
+# print(find_palindrome_products(999))
+
+# Euler 5 - divisible by 1 - 20
+# Primes: 2, 3, 5, 7, 11, 13, 17, 19
+
+def is_square(n):
+    return int(n**0.5) == (n ** 0.5)
+
+def is_cube(n):
+    return int(n ** (1/3)) == (n ** (1/3))
+
+def is_4th_power(n):
+    return int(n ** (1/4)) == (n ** (1/4))
+
+def factors_up_to(n):
+    """Return a list of all factors up to + inclusive of n"""
+    factors = []
+    for i in range(1, n + 1):
+        if is_prime(i) or is_square(i) or is_cube(i) or is_4th_power(i):
+            factors.append(i)
+    return factors
+
+def smallest_multiple(n):
+    """Calculate the smallest number divisble by all numbers up to n"""
+    factors = factors_up_to(n)
+    multiple = 1
+    print(factors)
+    for factor in factors:
+        if multiple % factor != 0:
+            print('multiple', multiple, 'factor', factor)
+            if is_square(factor):
+                multiple *= (factor ** 0.5)
+            elif is_cube(factor):
+                multiple *= (factor ** (1/3))
+            elif is_4th_power(factor):
+                multiple *= (factor ** (1/4))
+            else:
+                multiple *= factor
+    return multiple
+
+# print(smallest_multiple(20))
+# actual solution is 232792560
+# function returns   465585120
+# extra *2 somewhere.... :( probably with the 4th power thingy
