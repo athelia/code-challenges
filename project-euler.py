@@ -9,10 +9,8 @@ def sum_multiples(ceiling, multiple):
 def fibonacci(n, memo={}):
     if memo.get(n):
         return memo[n]
-    
     if n <= 1:
         return 1
-
     memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)
     return memo[n]
 
@@ -133,9 +131,27 @@ def square_of_sum(n):
 # print(a, b, c)
 
 def nth_prime(n):
-    if n == 1:
-        return 2
-    if n == 2:
-        return 3
+    # 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31
+    primes = [2, 3]
+    i = 1
+    if n <= 2:
+        return primes[n - 1]
     else:
-        pass
+        while len(primes) < n:
+            
+            # generate next potential prime
+            # check if prime
+            # if yes then append 
+            # -> this is a little wasteful. could be more space efficient 
+            # if we keep a counter and only hang on to the most recent prime.
+            possible_low = 6 * i - 1
+            possible_high = 6 * i + 1
+            if is_prime(possible_low):
+                primes.append(possible_low)
+            if is_prime(possible_high):
+                primes.append(possible_high)
+            i += 1
+    # print(primes)
+    return primes[n - 1]
+
+print(nth_prime(10001))
