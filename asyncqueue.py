@@ -1,6 +1,6 @@
 # asyncqueue.py
 import asyncio, os, random, time
-import itertools as it
+# import itertools as it
 
 async def make_item(size: int = 5) -> str:
     # create a random hex string from a bytes object
