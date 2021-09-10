@@ -1,6 +1,6 @@
 import asyncio, time
 
-#count() is a native coroutine, since introduced with `async`
+#count() is a standard API (Python 3.7+) coroutine, since introduced with `async`
 async def count():
     print('One')
     #Ceding control back to the caller - the coordinator
@@ -8,7 +8,7 @@ async def count():
     await asyncio.sleep(1)
     print('Two')
 
-#main() is a native coroutine also
+#main() is a coroutine also
 async def main():
     #This is the control loop/coordinator. 
     #To use a coroutine, we have to `await` the calls to get the results.
