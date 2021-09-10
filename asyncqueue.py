@@ -7,16 +7,18 @@ async def make_item(size: int = 5) -> str:
     return os.urandom(size).hex()
 
 async def rand_sleep(caller=None) -> None:
-    i = random.randint(0, 10)
+    i = random.randint(0, 2)
     if caller:
         print(f'{caller} sleeping for {i} seconds.')
     await asyncio.sleep(i)
 
 async def produce(name: int, q: asyncio.Queue) -> None:
+    """Puts a bunch of tuples (item, start_time) into the queue q."""
     n = random.randint(0, 10)
     # creates an iterator that returns obj (None) n times
-    for _ in it.repeat(None, n): # synchronous loop for each single producer
-        # why not use for _ in range?
+    # for _ in it.repeat(None, n): # synchronous loop for each single producer
+        # why not use for _ in range(n)?
+    for _ in range(n):
         await rand_sleep(caller=f'Producer {name}')
         i = await make_item()
         t = time.perf_counter() # performance counter for benchmarking
@@ -26,22 +28,22 @@ async def produce(name: int, q: asyncio.Queue) -> None:
 async def consume(name: int, q: asyncio.Queue) -> None:
     while True:
         await rand_sleep(caller=f'Consumer {name}')
-        i, t = await q.get() # .get() -> remove and return an item from queue
+        i, t = await q.get() # Queue.get() -> remove and return an item from queue
         # and unpack the tuple
         now = time.perf_counter()
         print(f'Consumer {name} got element <{i}> in {now-t:0.5f} seconds.')
-        q.task_done() #.task_done() -> indicate to queue that task complete
+        q.task_done() # Queue.task_done() -> indicate to queue that task complete
 
 async def main(nprod: int, ncon: int) -> None:
     q = asyncio.Queue()
     # .create_task() -> schedule the execution of a coroutine object in a spawn task
     producers = [asyncio.create_task(produce(n, q)) for n in range(nprod)]
     consumers = [asyncio.create_task(consume(n, q)) for n in range(ncon)]
-    await asyncio.gather(*producers) # unpack producers as arguments for .gather()
+    await asyncio.gather(*producers) # unpack (spread operator) producers as arguments for .gather()
     await q.join() # implicitly awaits consumers #how???
-    # .join() -> blocks until queue is empty (maintains a counter for added/done)
+    # Queue.join() -> blocks until queue is empty (maintains a counter for added/done)
     for c in consumers:
-        c.cancel() # .cancel() -> request that a task cancel itself
+        c.cancel() # Task.cancel() -> request that a task cancel itself
 
 if __name__ == '__main__':
     import argparse
