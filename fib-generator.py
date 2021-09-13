@@ -8,5 +8,5 @@ if __name__ == '__main__':
     f = fibonacci()
     print('Initial: 0, 1')
     for _ in range(10):
-        print(f.__next__())
+        print(next(f))
     
