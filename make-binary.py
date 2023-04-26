@@ -14,6 +14,7 @@ def make_binary(n):
     result.reverse()
     return result
 
+
 print(make_binary(4) == [1, 0, 0])
 print(make_binary(1) == [1])
 print(make_binary(15) == [1, 1, 1, 1])
