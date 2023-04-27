@@ -216,14 +216,18 @@ def find_next_consecutive_without_zeroes(lst, substring_length):
             max_substring_found = 0
         else:
             max_substring_found += 1
+            if max_substring_found == substring_length:
+                break
         i += 1
     if max_substring_found == substring_length:
-        return i
+        # return the starting position of the substring
+        return i - (substring_length - 1)
     else:
         return None
 
 
-large_number = "73167176531330624919225119674426574742355349194934\
+large_number = "\
+73167176531330624919225119674426574742355349194934\
 96983520312774506326239578318016984801869478851843\
 85861560789112949495459501737958331952853208805511\
 12540698747158523863050715693290963295227443043557\
@@ -245,4 +249,5 @@ large_number = "73167176531330624919225119674426574742355349194934\
 71636269561882670428252483600823257530420752963450"
 
 # print(largest_product_in_series([int(digit) for digit in large_number]))
-find_next_consecutive_without_zeroes([int(digit) for digit in large_number], 13)
+print(find_next_consecutive_without_zeroes([int(digit) for digit in large_number], 13))
+print(find_next_consecutive_without_zeroes([int(digit) for digit in large_number][45:], 13))
