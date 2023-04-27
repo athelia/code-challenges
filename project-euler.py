@@ -207,8 +207,20 @@ def multiply_all_elements(lst):
     return product
 
 
-def find_consecutive_without_zeroes(lst):
-    pass
+def find_next_consecutive_without_zeroes(lst, substring_length):
+    """Helper function to find long run of digits without zeroes"""
+    i = 0
+    max_substring_found = 0
+    while max_substring_found <= substring_length and i < len(lst):
+        if lst[i] == 0:
+            max_substring_found = 0
+        else:
+            max_substring_found += 1
+        i += 1
+    if max_substring_found == substring_length:
+        return i
+    else:
+        return None
 
 
 large_number = "73167176531330624919225119674426574742355349194934\
@@ -232,4 +244,5 @@ large_number = "73167176531330624919225119674426574742355349194934\
 05886116467109405077541002256983155200055935729725\
 71636269561882670428252483600823257530420752963450"
 
-print(largest_product_in_series([int(digit) for digit in large_number]))
+# print(largest_product_in_series([int(digit) for digit in large_number]))
+find_next_consecutive_without_zeroes([int(digit) for digit in large_number], 13)
