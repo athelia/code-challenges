@@ -181,6 +181,7 @@ def nth_prime(n):
 # print(nth_prime(10001))
 
 
+# Project Euler #8 https://projecteuler.net/problem=8
 def largest_product_in_series(s):
     """
     The four adjacent digits in the 1000-digit number that have the greatest product are 9 × 9 × 8 × 9 = 5832.
@@ -188,13 +189,15 @@ def largest_product_in_series(s):
     """
     # Fixed window approach?
     # Keep 14 digits at a time so we can divide by first digit to get new product
+    # TODO: While I think that the above approach is generally correct, I suspect I need two pointers
+    #   to solve this successfully. Tabled in favor of grinding leetcodes for now.
     product = highest_product = multiply_all_elements(s[:14])
-    for i in range(13, len(s) - 14):
-        if product == 0:
-            pass
-        else:
-            product = product / s[i - 13] * s[i]
+    i = 13
+    while i < len(s) - 14:
+        i = find_next_consecutive_without_zeroes(s, 13)
+        product = product / s[i - 13] * s[i]
         highest_product = max(product, highest_product)
+        i += 1
     return highest_product
     # Optimization: exempt any range including the digit 0
 
