@@ -18,7 +18,10 @@ def merge_ranges_naive(meetings):
         overlap_found = False
         for i, result in enumerate(results):
             # start time or end time of meeting falls between an existing result range
-            if result[0] <= meeting[0] <= result[1] or result[0] <= meeting[1] <= result[1]:
+            if (
+                result[0] <= meeting[0] <= result[1]
+                or result[0] <= meeting[1] <= result[1]
+            ):
                 overlap_found = True
                 # use the least start time and most end time and replace the range
                 results[i] = (min(result[0], meeting[0]), max(result[1], meeting[1]))
@@ -31,13 +34,13 @@ def merge_ranges_naive(meetings):
 
 # WIP
 def merge_ranges_better(meetings):
-    """ Sort first, then merge as long as new meeting falls within current range.
-        O(n * log(n))
+    """Sort first, then merge as long as new meeting falls within current range.
+    O(n * log(n))
 
-        >>> [(0, 2), (1, 5)]
-        [(0, 5)]
-        >>> [(1, 2), (3, 4)]
-        [(1, 2), (3, 4)]
+    >>> [(0, 2), (1, 5)]
+    [(0, 5)]
+    >>> [(1, 2), (3, 4)]
+    [(1, 2), (3, 4)]
     """
 
     results = []
@@ -48,9 +51,15 @@ def merge_ranges_better(meetings):
         result = sorted_meetings[i]
         j = i + 1
         # as long as the start time of j is between start and end time of i
-        while sorted_meetings[i][0] <= sorted_meetings[j][0] <= sorted_meetings[i][1] and j < len(sorted_meetings) - 1:
+        while (
+            sorted_meetings[i][0] <= sorted_meetings[j][0] <= sorted_meetings[i][1]
+            and j < len(sorted_meetings) - 1
+        ):
             # sorted already, so start times will be earlier for i
-            result = (sorted_meetings[i][0], max(sorted_meetings[i][1], sorted_meetings[j][1]))
+            result = (
+                sorted_meetings[i][0],
+                max(sorted_meetings[i][1], sorted_meetings[j][1]),
+            )
             j += 1
         # we've already consumed everything within the range, so skip ahead
         results.append(result)
@@ -60,8 +69,8 @@ def merge_ranges_better(meetings):
 
 # Tests
 
-class Test(unittest.TestCase):
 
+class Test(unittest.TestCase):
     def test_meetings_overlap(self):
         actual = merge_ranges([(1, 3), (2, 4)])
         expected = [(1, 4)]

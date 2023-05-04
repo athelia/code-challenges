@@ -10,18 +10,18 @@ class Solution:
         counter = len(nums) - 1
         while low < high and counter > 0:
             mid = low + (high - low) // 2
-            print(f'low={low} mid={mid} high={high}')
+            print(f"low={low} mid={mid} high={high}")
             if nums[mid] == target:
-                print(f'found target. mid={mid}')
+                print(f"found target. mid={mid}")
                 return mid
                 # break
             elif nums[mid] < target:
                 low = mid + 1
-                print(f'moved low. low={low} mid={mid} high={high}')
+                print(f"moved low. low={low} mid={mid} high={high}")
                 # return 'premature exit 1'
             elif nums[mid] > target:
                 high = mid - 1
-                print(f'moved high. low={low} mid={mid} high={high}')
+                print(f"moved high. low={low} mid={mid} high={high}")
             counter -= 1
         return -1
 
@@ -29,7 +29,7 @@ class Solution:
         while nums:
             if nums[-1] == target:
                 return target
-            nums = nums[:len(nums) // 2]
+            nums = nums[: len(nums) // 2]
 
 
 """
@@ -40,8 +40,12 @@ low hi  mid         n[mid]  if/elif1/elif2
 
 """
 
-if __name__ == '__main__':
-    cases = [([-1, 0, 3, 5, 9, 12], 9), ([-1, 0, 3, 5, 9, 12], 2), ([-1, 0, 3, 5, 9, 12], 3)]
+if __name__ == "__main__":
+    cases = [
+        ([-1, 0, 3, 5, 9, 12], 9),
+        ([-1, 0, 3, 5, 9, 12], 2),
+        ([-1, 0, 3, 5, 9, 12], 3),
+    ]
     s = Solution()
     print([s.search(*case) for case in cases])
     print([s.test(*case) for case in cases])

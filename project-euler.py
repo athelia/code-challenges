@@ -250,4 +250,8 @@ large_number = "\
 
 # print(largest_product_in_series([int(digit) for digit in large_number]))
 print(find_next_consecutive_without_zeroes([int(digit) for digit in large_number], 13))
-print(find_next_consecutive_without_zeroes([int(digit) for digit in large_number][45:], 13))
+print(
+    find_next_consecutive_without_zeroes(
+        [int(digit) for digit in large_number][45:], 13
+    )
+)

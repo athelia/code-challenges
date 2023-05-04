@@ -29,18 +29,18 @@ def find_repeat(numbers):
     return floor
 
 
-'''
+"""
 Things not to forget:
   - add floor to midpoint calculation: floor + (ceiling - floor) // 2
   - start the high bound at midpoint + 1
   - only need to store & compare 1 set of possibilities (low bound or high bound) - but need to keep track of both possible ranges
-'''
+"""
 
 
 # Tests
 
-class Test(unittest.TestCase):
 
+class Test(unittest.TestCase):
     def test_just_the_repeated_number(self):
         actual = find_repeat([1, 1])
         expected = 1
@@ -62,5 +62,5 @@ class Test(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)
