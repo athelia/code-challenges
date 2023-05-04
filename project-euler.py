@@ -88,7 +88,7 @@ def find_palindrome_products(n):
 
 
 def is_square(n):
-    return int(n**0.5) == (n**0.5)
+    return int(n ** 0.5) == (n ** 0.5)
 
 
 def is_cube(n):
@@ -117,7 +117,7 @@ def smallest_multiple(n):
         if multiple % factor != 0:
             print("multiple", multiple, "factor", factor)
             if is_square(factor):
-                multiple *= factor**0.5
+                multiple *= factor ** 0.5
             elif is_cube(factor):
                 multiple *= factor ** (1 / 3)
             elif is_4th_power(factor):
@@ -137,7 +137,7 @@ def smallest_multiple(n):
 def sum_of_squares(n):
     total = 0
     for i in range(1, n + 1):
-        total += i**2
+        total += i ** 2
     return total
 
 
@@ -145,7 +145,7 @@ def square_of_sum(n):
     total = 0
     for i in range(1, n + 1):
         total += i
-    return total**2
+    return total ** 2
 
 
 # a = sum_of_squares(100)
@@ -181,6 +181,7 @@ def nth_prime(n):
 # print(nth_prime(10001))
 
 
+# Project Euler #8 https://projecteuler.net/problem=8
 def largest_product_in_series(s):
     """
     The four adjacent digits in the 1000-digit number that have the greatest product are 9 × 9 × 8 × 9 = 5832.
@@ -188,13 +189,15 @@ def largest_product_in_series(s):
     """
     # Fixed window approach?
     # Keep 14 digits at a time so we can divide by first digit to get new product
+    # TODO: While I think that the above approach is generally correct, I suspect I need two pointers
+    #   to solve this successfully. Tabled in favor of grinding leetcodes for now.
     product = highest_product = multiply_all_elements(s[:14])
-    for i in range(13, len(s) - 14):
-        if product == 0:
-            pass
-        else:
-            product = product / s[i - 13] * s[i]
+    i = 13
+    while i < len(s) - 14:
+        i = find_next_consecutive_without_zeroes(s, 13)
+        product = product / s[i - 13] * s[i]
         highest_product = max(product, highest_product)
+        i += 1
     return highest_product
     # Optimization: exempt any range including the digit 0
 
