@@ -88,7 +88,7 @@ def find_palindrome_products(n):
 
 
 def is_square(n):
-    return int(n ** 0.5) == (n ** 0.5)
+    return int(n**0.5) == (n**0.5)
 
 
 def is_cube(n):
@@ -117,7 +117,7 @@ def smallest_multiple(n):
         if multiple % factor != 0:
             print("multiple", multiple, "factor", factor)
             if is_square(factor):
-                multiple *= factor ** 0.5
+                multiple *= factor**0.5
             elif is_cube(factor):
                 multiple *= factor ** (1 / 3)
             elif is_4th_power(factor):
@@ -137,7 +137,7 @@ def smallest_multiple(n):
 def sum_of_squares(n):
     total = 0
     for i in range(1, n + 1):
-        total += i ** 2
+        total += i**2
     return total
 
 
@@ -145,7 +145,7 @@ def square_of_sum(n):
     total = 0
     for i in range(1, n + 1):
         total += i
-    return total ** 2
+    return total**2
 
 
 # a = sum_of_squares(100)
