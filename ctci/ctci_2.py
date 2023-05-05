@@ -1,8 +1,4 @@
 # CTCI Chapter 2, Linked Lists
-# - CTCI 2.1 + follow up, perhaps
-#     - **Remove Dups**: Write code to remove duplicates from an unsorted linked list.
-#     - FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
-#     - Hints: #9, #40
 
 
 class Node:
@@ -76,6 +72,10 @@ class LinkedList:
             current = current.next
         return length
 
+    # - CTCI 2.1 + follow up, perhaps
+    #     - **Remove Dups**: Write code to remove duplicates from an unsorted linked list.
+    #     - FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
+    #     - Hints: #9, #40
     def remove_dupes(self):
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
@@ -96,7 +96,7 @@ class LinkedList:
                 # a -> b -> c
                 # b -> None
                 # a -> c
-                print(f'Deleting node value {current.next.value}')
+                print(f"Deleting node value {current.next.value}")
                 new_next = current.next.next
                 current.next.next = None
                 current.next = new_next
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     )
     ll.extend([n2, n4, n5])
     print(f"ll={ll}")
-    print('\n' + '~*' * 3 + '~' + ' ' * 4 + 'Remove duplicates' + ' ' * 4 + '~*' * 3 + '~')
+    print("\n" + "~*~*~*~    Remove duplicates    ~*~*~*~")
     ll.traverse_and_print()
     ll.remove_dupes()
     ll.traverse_and_print()
