@@ -38,6 +38,10 @@ class LinkedList:
         self.tail = node
         print(f"Appended {node}")
 
+    def extend(self, nodelist):
+        for node in nodelist:
+            self.append(node)
+
     def prepend(self, node):
         node.next = self.head
         self.head = node
@@ -72,23 +76,41 @@ class LinkedList:
             current = current.next
         return length
 
-    def remove_dups(self):
+    def remove_dupes(self):
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
         >>> l = LinkedList(Node(value='apple', next=Node(value='berry', next=Node(value='apple'))))
-        <LinkedList head=<Node value="apple" next="berry"> tail=<Node value="apple" next=None>>
+        <LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next=None>>
 
-        >>> l.remove_dups()
+        >>> l.remove_dupes()
 
         >>> l.traverse_and_print()
         'apple'
         'berry'
         """
-        # for each node, search for a duplicate -> O(n^2)
+        # if allowed a buffer: use a set to track seen values
         current = self.head
-        while current:
-            # FIXME: always starts at head, so will delete the value itself and not just dupes
-            self.delete(current.value)
+        seen = {current.value}
+        while current and current.next:
+            if current.next.value in seen:
+                # a -> b -> c
+                # b -> None
+                # a -> c
+                print(f'Deleting node value {current.next.value}')
+                new_next = current.next.next
+                current.next.next = None
+                current.next = new_next
+            else:
+                seen.add(current.next.value)
+            current = current.next
+
+    def remove_dupes_bufferless(self):
+        pass
+        # for each node, search for a duplicate -> O(n^2)
+        # current = self.head
+        # while current:
+        #     # FIXME: always starts at head, so will delete the value itself and not just dupes
+        #     self.delete(current.value)
 
 
 if __name__ == "__main__":
@@ -110,7 +132,9 @@ if __name__ == "__main__":
     n2.next = (
         None  # otherwise n2.next is still pointing to n3, leading to a circular ll
     )
-    ll.append(n2)
-    ll.append(n4)
-    ll.append(n5)
+    ll.extend([n2, n4, n5])
     print(f"ll={ll}")
+    print('\n' + '~*' * 3 + '~' + ' ' * 4 + 'Remove duplicates' + ' ' * 4 + '~*' * 3 + '~')
+    ll.traverse_and_print()
+    ll.remove_dupes()
+    ll.traverse_and_print()
