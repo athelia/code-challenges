@@ -79,27 +79,30 @@ class LinkedList:
     def remove_dupes(self):
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
-        >>> l = LinkedList(Node(value='apple', next=Node(value='berry', next=Node(value='apple'))))
-        <LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next=None>>
+        >>> l = LinkedList(Node(value='apple', nxt=Node(value='berry', nxt=Node(value='apple'))))
+        Created LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next.value=berry>
 
         >>> l.remove_dupes()
+        Deleting node value apple
 
         >>> l.traverse_and_print()
-        'apple'
-        'berry'
+        apple
+        berry
         """
         # if allowed a buffer: use a set to track seen values
         current = self.head
         seen = {current.value}
         while current and current.next:
             if current.next.value in seen:
-                # a -> b -> c
+                # a -> b -> c -> None
                 # b -> None
-                # a -> c
+                # a -> c -> None
                 print(f"Deleting node value {current.next.value}")
                 new_next = current.next.next
                 current.next.next = None
                 current.next = new_next
+                # TODO: if deleted node was self.tail, move self.tail back one node
+                # if current.next is None, self.tail = current
             else:
                 seen.add(current.next.value)
             current = current.next
