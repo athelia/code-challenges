@@ -86,8 +86,10 @@ class LinkedList:
     def remove_dupes(self):
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
-        >>> l = LinkedList(Node(value='apple', nxt=Node(value='berry', nxt=Node(value='apple'))))
-        Created LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next.value=berry>
+        >>> n = Node('apple')
+
+        >>> l = LinkedList(head=Node(value='apple', nxt=Node(value='berry', nxt=n)), tail=n)
+        Created LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next=None>
 
         >>> l.remove_dupes()
         Deleting node value apple
@@ -122,6 +124,31 @@ class LinkedList:
         #     # FIXME: always starts at head, so will delete the value itself and not just dupes
         #     self.delete(current.value)
 
+    def return_kth_to_last(self, k):
+        """ Given a singly-linked list, return the kth to last element.
+
+        >>> n = Node('chrysanthemum')
+
+        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=n)), tail=n)
+        Created LinkedList head=<Node value=aster next.value=begonia> tail=<Node value=chrysanthemum next=None>
+
+        >>> l.return_kth_to_last(1)
+        <Node value={
+
+        """
+        slow, fast = self.head, self.head
+
+        for _ in range(k):
+            fast = fast.next
+            # TODO: error handling in case there aren't enough elements
+            # print(f"LinkedList too short; cannot return k={k}th to last")
+            # raise IndexError
+
+        while fast and fast.next:
+            if fast.next is None:
+                return slow.next
+            slow, fast = slow.next, fast.next
+
 
 if __name__ == "__main__":
     n1 = Node("apple")
@@ -143,8 +170,9 @@ if __name__ == "__main__":
         None  # otherwise n2.next is still pointing to n3, leading to a circular ll
     )
     ll.extend([n2, n4, n5])
+    ll.extend([Node(fruit) for fruit in ["elderberry", "fig", "grapefruit"]])
     print(f"ll={ll}")
-    print("\n" + "~*~*~*~    Remove duplicates    ~*~*~*~")
-    ll.traverse_and_print()
-    ll.remove_dupes()
-    ll.traverse_and_print()
+    # print("\n" + "~*~*~*~    Remove duplicates    ~*~*~*~")
+    # ll.traverse_and_print()
+    # ll.remove_dupes()
+    # ll.traverse_and_print()
