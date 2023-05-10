@@ -55,6 +55,13 @@ class LinkedList:
         return None
 
     def delete(self, value):
+        if self.head.value == value:
+            new_head = self.head.next
+            self.head.next = None
+            self.head = new_head
+            print(f"Successfully deleted {value}")
+            return None
+
         current = self.head
         while current.next:
             if current.next.value == value:
