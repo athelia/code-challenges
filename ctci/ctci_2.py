@@ -37,6 +37,7 @@ class LinkedList:
     def extend(self, nodelist):
         for node in nodelist:
             self.append(node)
+        # TODO improvement: only reassign self.tail to the last element
 
     def prepend(self, node):
         node.next = self.head
@@ -124,33 +125,74 @@ class LinkedList:
         #     # FIXME: always starts at head, so will delete the value itself and not just dupes
         #     self.delete(current.value)
 
-    def return_kth_to_last(self, k):
-        """ Given a singly-linked list, return the kth to last element.
-
-        >>> n = Node('chrysanthemum')
-
-        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=n)), tail=n)
-        Created LinkedList head=<Node value=aster next.value=begonia> tail=<Node value=chrysanthemum next=None>
-
-        >>> l.return_kth_to_last(1)
-        <Node value={
-
+    def return_kth_to_last(self, k: int) -> Node:
+        """Given a singly-linked list, return the kth to last element.
+        >>> n = Node('dandelion')
+        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=Node(value='chrysanthemum', nxt=n))), tail=n)
+        Created LinkedList head=<Node value=aster next.value=begonia> tail=<Node value=dandelion next=None>
+        >>> l.return_kth_to_last(2)
+        <Node value=chrysanthemum next.value=dandelion>
+        >>> l.return_kth_to_last(5)
+        Traceback (most recent call last):
+        ...
+        IndexError: LinkedList too short; cannot return k=5th to last
         """
         slow, fast = self.head, self.head
-
         for _ in range(k):
             fast = fast.next
-            # TODO: error handling in case there aren't enough elements
-            # print(f"LinkedList too short; cannot return k={k}th to last")
-            # raise IndexError
-
-        while fast and fast.next:
-            if fast.next is None:
-                return slow.next
+            # TODO: fixme
+            if fast.next is None and _ + 1 < k:
+                raise IndexError(f"LinkedList too short; cannot return k={k}th to last")
+        while fast:
             slow, fast = slow.next, fast.next
+        return slow
+
+
+# a -> b -> c -> d -> None
+# k = 2
+# fast  slow    _
+# a     a
+# b     a       0
+# c     a       1
+# d     b
+# None  c
 
 
 if __name__ == "__main__":
+
+    def generate_fruit_ll(length):
+        fruits = [
+            "",
+            "berry",
+            "cherry",
+            "durian",
+            "elderberry",
+            "fig",
+            "grapefruit",
+            "honeydew",
+            "ice apple",
+            "jackfruit",
+            "kiwi",
+            "lemon",
+            "mango",
+            "nectarine",
+            "orange",
+            "pear",
+            "quince",
+            "raspberry",
+            "strawberry",
+            "tamarind",
+            "ube",
+            "vanilla",
+            "watermelon",
+            "yuzu",
+            "zante currant",
+        ]
+        node = Node("apple")
+        linked_fruits = LinkedList(node)
+        linked_fruits.extend([Node(fruit) for fruit in fruits[1:length]])
+        return linked_fruits
+
     n1 = Node("apple")
     n2 = Node("berry")
     n3 = Node("cherry")
@@ -173,6 +215,13 @@ if __name__ == "__main__":
     ll.extend([Node(fruit) for fruit in ["elderberry", "fig", "grapefruit"]])
     print(f"ll={ll}")
     # print("\n" + "~*~*~*~    Remove duplicates    ~*~*~*~")
-    # ll.traverse_and_print()
+    # ll1 = generate_fruit_ll(8)
+    # ll1.extend([Node(fruit) for fruit in ["apple", "apple", "honeydew", "grapefruit"]])
+    # ll1.traverse_and_print()
     # ll.remove_dupes()
-    # ll.traverse_and_print()
+    # ll1.traverse_and_print()
+    print("\n" + "~*~*~*~    Return kth to last    ~*~*~*~")
+    ll2 = generate_fruit_ll(15)
+    ll2.traverse_and_print()
+    print(f"7th to last={ll2.return_kth_to_last(7).value}")
+    print(f"12th to last={ll2.return_kth_to_last(12).value}")
