@@ -1,12 +1,13 @@
 # CTCI Chapter 2, Linked Lists
+from typing import Any, Collection, Optional
 
 
 class Node:
-    def __init__(self, value, nxt=None):
+    def __init__(self, value: Any, nxt: Optional[Any] = None) -> None:
         self.value = value
         self.next = nxt
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Node value={self.value}" + (
             f" next={self.next}>"
             if self.next is None
@@ -15,36 +16,46 @@ class Node:
 
 
 class LinkedList:
-    def __init__(self, head, tail=None):
+    def __init__(self, head: Node, tail: Node = None, verbose: bool = None) -> None:
+        """LL data structure with constant time append and prepend."""
         self.head = head
         self.tail = tail if tail else head
-        print(f"Created LinkedList head={self.head} tail={self.tail}")
+        if verbose:
+            print(f"Created LinkedList head={self.head} tail={self.tail}")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<LinkedList head={self.head} tail={self.tail}>"
 
-    def traverse_and_print(self):
+    def traverse_and_print(self) -> None:
         current = self.head
         while current:
             print(current.value)
             current = current.next
 
-    def append(self, node):
+    def append(self, node: Node, verbose: bool = False) -> None:
         self.tail.next = node
         self.tail = node
-        print(f"Appended {node}")
+        if verbose:
+            print(f"Appended {node}")
 
-    def extend(self, nodelist):
+    def extend(self, nodelist: Collection[Node], verbose: bool = False) -> None:
+        """Like Python List extend, append every element of an iterable containing Node elements."""
         for node in nodelist:
-            self.append(node)
-        # TODO improvement: only reassign self.tail to the last element
+            if type(node) is Node:
+                # TODO improvement: only reassign self.tail to the last element (don't reuse .append)
+                self.append(node, verbose=verbose)
+            else:
+                raise TypeError(
+                    f"Expected Node type but got {type(node)} for element {node}"
+                )
 
-    def prepend(self, node):
+    def prepend(self, node: Node, verbose: bool = False) -> None:
         node.next = self.head
         self.head = node
-        print(f"Prepended {node}")
+        if verbose:
+            print(f"Prepended {node}")
 
-    def find(self, value):
+    def find(self, value: Any) -> Optional[Node]:
         """Given a value, return a node matching the value if found in the linked list, or None"""
         current = self.head
         while current:
@@ -55,24 +66,39 @@ class LinkedList:
         print(f"No node found with value {value}")
         return None
 
-    def delete(self, value):
+    def delete(self, value: Any, verbose: bool = False) -> None:
         if self.head.value == value:
             new_head = self.head.next
             self.head.next = None
             self.head = new_head
-            print(f"Successfully deleted {value}")
+            if verbose:
+                print(f"Successfully deleted {value}")
             return None
 
         current = self.head
         while current.next:
             if current.next.value == value:
                 current.next = current.next.next
-                print(f"Successfully deleted {value}")
+                if verbose:
+                    print(f"Successfully deleted {value}")
                 return None
         print(f"No node found with value {value}")
         return None
 
-    def get_length(self):
+    def get_length(self) -> int:
+        """Get the length of a linked list by iterating through it.
+        >>> ll1 = generate_fruits_ll(10)
+        >>> ll1.get_length()
+        10
+        >>> ll2 = generate_fruits_ll(1)
+        >>> ll2.traverse_and_print()
+        apple
+        >>> ll2.get_length()
+        1
+
+        Returns:
+            int: length of linked list
+        """
         current = self.head
         length = 0
         while current:
@@ -84,12 +110,12 @@ class LinkedList:
     #     - **Remove Dups**: Write code to remove duplicates from an unsorted linked list.
     #     - FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
     #     - Hints: #9, #40
-    def remove_dupes(self):
+    def remove_dupes(self) -> None:
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
         >>> n = Node('apple')
 
-        >>> l = LinkedList(head=Node(value='apple', nxt=Node(value='berry', nxt=n)), tail=n)
+        >>> l = LinkedList(head=Node(value='apple', nxt=Node(value='berry', nxt=n)), tail=n, verbose=True)
         Created LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next=None>
 
         >>> l.remove_dupes()
@@ -117,18 +143,16 @@ class LinkedList:
                 seen.add(current.next.value)
             current = current.next
 
-    def remove_dupes_bufferless(self):
+    def remove_dupes_bufferless(self) -> None:
         pass
         # for each node, search for a duplicate -> O(n^2)
         # current = self.head
         # while current:
-        #     # FIXME: always starts at head, so will delete the value itself and not just dupes
-        #     self.delete(current.value)
 
     def return_kth_to_last(self, k: int) -> Node:
         """Given a singly-linked list, return the kth to last element.
         >>> n = Node('dandelion')
-        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=Node(value='chrysanthemum', nxt=n))), tail=n)
+        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=Node(value='chrysanthemum', nxt=n))), tail=n, verbose=True)
         Created LinkedList head=<Node value=aster next.value=begonia> tail=<Node value=dandelion next=None>
         >>> l.return_kth_to_last(2)
         <Node value=chrysanthemum next.value=dandelion>
@@ -158,41 +182,65 @@ class LinkedList:
 # None  c
 
 
+def generate_fruits_ll(length: int = 10, verbose: bool = False) -> LinkedList:
+    """Helper to create a linked list of alphabetical strings. Can only be 26 elements long.
+
+    >>> short_ll = generate_fruits_ll(1, True)
+    <LinkedList head=<Node value=apple next=None> tail=<Node value=apple next=None>>
+    >>> midsize_ll = generate_fruits_ll(15, True)
+    <LinkedList head=<Node value=apple next.value=berry> tail=<Node value=orange next=None>>
+    >>> too_big_ll = generate_fruits_ll(100)
+    Traceback (most recent call last):
+    ...
+    Exception: Only 26 elements are specified for this method. Please choose a length integer <= 26.
+
+    Args:
+        length (int): Desired length of generated LL, up to 26 elements long
+        verbose (bool): Whether to show print output for the generated LL
+    Returns:
+        LinkedList: Newly generated linked list
+    Raises:
+        Exception: If the length is greater than 26
+    """
+    fruits = [
+        "apple",
+        "berry",
+        "cherry",
+        "durian",
+        "elderberry",
+        "fig",
+        "grapefruit",
+        "honeydew",
+        "ice apple",
+        "jackfruit",
+        "kiwi",
+        "lemon",
+        "mango",
+        "nectarine",
+        "orange",
+        "pear",
+        "quince",
+        "raspberry",
+        "strawberry",
+        "tamarind",
+        "ube",
+        "vanilla",
+        "watermelon",
+        "yuzu",
+        "zante currant",
+    ]
+    if length > 26:
+        raise Exception(
+            "Only 26 elements are specified for this method. Please choose a length integer <= 26."
+        )
+    linked_fruits = LinkedList(Node(fruits[0]))
+    linked_fruits.extend([Node(fruit) for fruit in fruits[1:length]])
+    if verbose:
+        print(f"<LinkedList head={linked_fruits.head} tail={linked_fruits.tail}>")
+    return linked_fruits
+
+
 if __name__ == "__main__":
-
-    def generate_fruit_ll(length):
-        fruits = [
-            "",
-            "berry",
-            "cherry",
-            "durian",
-            "elderberry",
-            "fig",
-            "grapefruit",
-            "honeydew",
-            "ice apple",
-            "jackfruit",
-            "kiwi",
-            "lemon",
-            "mango",
-            "nectarine",
-            "orange",
-            "pear",
-            "quince",
-            "raspberry",
-            "strawberry",
-            "tamarind",
-            "ube",
-            "vanilla",
-            "watermelon",
-            "yuzu",
-            "zante currant",
-        ]
-        node = Node("apple")
-        linked_fruits = LinkedList(node)
-        linked_fruits.extend([Node(fruit) for fruit in fruits[1:length]])
-        return linked_fruits
-
     n1 = Node("apple")
     n2 = Node("berry")
     n3 = Node("cherry")
@@ -221,7 +269,7 @@ if __name__ == "__main__":
     # ll.remove_dupes()
     # ll1.traverse_and_print()
     print("\n" + "~*~*~*~    Return kth to last    ~*~*~*~")
-    ll2 = generate_fruit_ll(15)
-    ll2.traverse_and_print()
-    print(f"7th to last={ll2.return_kth_to_last(7).value}")
-    print(f"12th to last={ll2.return_kth_to_last(12).value}")
+    ll = generate_fruits_ll(15)
+    ll.traverse_and_print()
+    print(f"7th to last={ll.return_kth_to_last(7).value}")
+    print(f"12th to last={ll.return_kth_to_last(12).value}")
