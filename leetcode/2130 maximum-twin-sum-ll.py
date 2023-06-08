@@ -16,7 +16,6 @@ class Solution:
         # then sum ll[i] + ll[i+n/2] to get max
 
         # with 2 pointers, get midpoint
-        length = 0
         slow, fast = head, head
         while fast:
             slow = slow.next
@@ -34,15 +33,52 @@ class Solution:
         return result
 
 
-def reverse_ll(head: Optional[ListNode]) -> ListNode:
-    current = head
-    while current:
-        current.next.next = current
-        # WIP
-    return current
-
 # 5 -> 4 -> 2 -> 1 -> None
 # slow  fast
 # 5     5
 # 4     2
 # 2     None
+
+# 5 -> 4 -> 1 -> 2 -> None
+
+
+def reverse_ll(head: Optional[ListNode]) -> ListNode:
+    # iterate to the right, but adjust .nexts to point "to the left"
+    current = head
+    new_previous = None
+    while current:
+        new_current = current.next
+        current.next = new_previous
+        new_previous = current
+        current = new_current
+    return new_previous
+
+
+# a -> b -> c -> d -> None
+# cur   n_prev  n_cur   c.nxt   n_prev  current
+# a     None    b       None    a       b
+# b     a       c       a       b       c
+# c     b       d       b       c       d
+# d     c       None    c       d       None
+# end
+# a -> None
+# b -> a
+# c -> b
+# d -> c
+
+# goal:
+# None <- a
+# a <- b
+# b <- c
+# c <- d
+# d <- head
+
+
+def reverse_ll_2(head: Optional[ListNode]) -> ListNode:
+    left, current = None, head
+    while current:
+        right = current.next
+        current.next = left
+        left = current
+        current = right
+    return left
