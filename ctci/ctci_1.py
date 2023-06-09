@@ -1,4 +1,6 @@
 # CTCI Chapter 1, Arrays and Strings
+from typing import List
+
 
 # 1.1: Is Unique: Implement an algorithm to determine if a string has all unique characters.
 # What if you cannot use additional data structures?
@@ -74,6 +76,47 @@ def compress_string(string: str) -> str:
             result += string[i] + str(current_count)
             current_count = 1
     return string if len(string) < len(result) else result
+
+
+# 1.7 Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
+# bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
+def rotate_matrix(matrix: List[List]) -> List[List]:
+    return matrix
+
+
+# 1.8 Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
+# column are set to 0.
+# [
+#   [1, 1, 1],
+#   [1, 1, 0],
+#   [1, 0, 1]
+# ]
+# [
+#   [1, 0, 0],
+#   [0, 0, 0],
+#   [0, 0, 0]
+# ]
+
+
+def zero_matrix(matrix: List[List[int]]) -> List[List[int]]:
+    result = matrix
+    height = len(matrix)
+    width = len(matrix[0])
+
+    # Check rows
+    for y in range(height):
+        for element in matrix[y]:
+            if element == 0:
+                result[y] = [0] * width
+                break
+
+    # Check columns
+    for y in range(height):
+        for x in range(width):
+            if matrix[y][x] == 0:
+                pass
+
+    return result
 
 
 if __name__ == "__main__":
