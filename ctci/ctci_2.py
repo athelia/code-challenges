@@ -300,38 +300,3 @@ def generate_fruits_ll(length: int = 10, verbose: bool = False) -> LinkedList:
     if verbose:
         print(f"<LinkedList head={linked_fruits.head} tail={linked_fruits.tail}>")
     return linked_fruits
-
-
-if __name__ == "__main__":
-    n1 = Node("apple")
-    n2 = Node("berry")
-    n3 = Node("cherry")
-    n4 = Node("durian")
-    n5 = Node("apple")
-    ll = LinkedList(n1)
-    ll.append(n2)
-    ll.append(n3)
-    lgth = ll.get_length()
-    print(f"length={lgth}")
-    ll.traverse_and_print()
-    ll.find("berry")
-    ll.delete("berry")
-    ll.traverse_and_print()
-    ll.find("berry")
-    n2.next = (
-        None  # otherwise n2.next is still pointing to n3, leading to a circular ll
-    )
-    ll.extend([n2, n4, n5])
-    ll.extend([Node(fruit) for fruit in ["elderberry", "fig", "grapefruit"]])
-    print(f"ll={ll}")
-    # print("\n" + "~*~*~*~    Remove duplicates    ~*~*~*~")
-    # ll1 = generate_fruit_ll(8)
-    # ll1.extend([Node(fruit) for fruit in ["apple", "apple", "honeydew", "grapefruit"]])
-    # ll1.traverse_and_print()
-    # ll.remove_dupes()
-    # ll1.traverse_and_print()
-    print("\n" + "~*~*~*~    Return kth to last    ~*~*~*~")
-    ll = generate_fruits_ll(15)
-    ll.traverse_and_print()
-    print(f"7th to last={ll.return_kth_to_last(7).value}")
-    print(f"12th to last={ll.return_kth_to_last(12).value}")
