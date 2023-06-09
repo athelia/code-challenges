@@ -171,15 +171,77 @@ class LinkedList:
             slow, fast = slow.next, fast.next
         return slow
 
+    # a -> b -> c -> d -> None
+    # k = 2
+    # fast  slow    _
+    # a     a
+    # b     a       0
+    # c     a       1
+    # d     b
+    # None  c
 
-# a -> b -> c -> d -> None
-# k = 2
-# fast  slow    _
-# a     a
-# b     a       0
-# c     a       1
-# d     b
-# None  c
+    # 2.4 Partition: Write code to partition a linked list around a value x, such that all nodes less than x come
+    # before all nodes greater than or equal to x. If x is contained within the list, the values of x only need
+    # to be after the elements less than x (see below). The partition element x can appear anywhere in the
+    # "right partition"; it does not need to appear between the left and right partitions.
+    # EXAMPLE
+    # Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
+    # Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
+    def partition(self, p: int) -> None:
+        current = self.head
+        while current:
+            current = current.next
+        return None
+
+
+# 2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
+# the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
+# that node.
+# EXAMPLE
+# Input: the node c from the linked list a -> b -> c -> d -> e -> f
+# Result: nothing is returned, but the new linked list looks like a -> b -> d -> e -> f
+def delete_middle_node(n: Node, verbose: bool = False) -> None:
+    """ 'Delete' a middle node from a linked list by reassigning the value and .next. Does not work for tail node."""
+    n.value, n.next = n.next.value, n.next.next
+    if verbose:
+        print(f"Deleted node")
+    return None
+
+
+# 2.5 Sum Lists: You have two numbers represented by a linked list, where each node contains a single
+# digit. The digits are stored in reverse order, such that the Vs digit is at the head of the list. Write a
+# function that adds the two numbers and returns the sum as a linked list.
+# EXAMPLE
+# Input: ( 7 - > 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+# Output: 2 -> 1 -> 9. That is, 912.
+def sum_lists_same_length(linked_1: LinkedList, linked_2: LinkedList) -> LinkedList:
+    """ Given linked lists that represent the digits of an integer, stored ones place at the head, return the sum.
+        Assumes that both linked lists have the same number of digits.
+    """
+    pointer_1 = linked_1.head
+    pointer_2 = linked_2.head
+    carried_one = 0
+    result = None
+    while pointer_1 or pointer_2:
+        p1_value = pointer_1.value if pointer_1 else 0
+        p2_value = pointer_2.value if pointer_2 else 0
+        digit_sum = p1_value + p2_value + carried_one
+        digit = digit_sum % 10
+        if not result:
+            result = LinkedList(Node(digit))
+        else:
+            result.append(Node(digit))
+        carried_one = 1 if digit_sum > 10 else 0
+        pointer_1 = pointer_1.next if pointer_1 else None
+        pointer_2 = pointer_2.next if pointer_2 else None
+    return result
+
+
+# FOLLOW UP
+# Suppose the digits are stored in forward order. Repeat the above problem.
+# EXAMPLE
+# Input: (6 -> 1 -> 7) + (2 -> 9 -> 5). That is, 617 + 295.
+# Output:9 -> 1 -> 2. That is, 912.
 
 
 def generate_fruits_ll(length: int = 10, verbose: bool = False) -> LinkedList:
