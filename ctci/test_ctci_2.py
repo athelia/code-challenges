@@ -4,7 +4,7 @@ from ctci_2 import (
     delete_middle_node,
     generate_fruits_ll,
     sum_lists_ones_digit_at_head,
-    listify_integer,
+    sum_lists_ones_digit_at_tail,
 )
 import unittest
 
@@ -111,3 +111,28 @@ class Ctci2(unittest.TestCase):
         self.assertEqual(0, result_2.head.value)
         self.assertEqual(2, result_2.head.next.value)
         self.assertEqual(6, result_2.tail.value)
+
+        # 7 -> 1 -> 6 + 5 -> 0 -> 4 = 2 -> 2 -> 0 -> 1
+        ll4 = LinkedList.listify_integer(405)
+        result_3 = sum_lists_ones_digit_at_head(ll1, ll4)
+        self.assertEqual(result_3, LinkedList.listify_integer(1022))
+        self.assertEqual(2, result_3.head.value)
+        self.assertEqual(2, result_3.head.next.value)
+        self.assertEqual(0, result_3.head.next.next.value)
+        self.assertEqual(1, result_3.tail.value)
+
+    def test_2_5_b(self):
+        # Input: (6 -> 1 -> 7) + (2 -> 9 -> 5). That is, 617 + 295.
+        # Output: 9 -> 1 -> 2. That is, 912.
+        ll1 = LinkedList.listify_integer(617, True)
+        ll2 = LinkedList.listify_integer(295, True)
+        result = sum_lists_ones_digit_at_tail(ll1, ll2)
+        self.assertEqual(result, LinkedList.listify_integer(912, True))
+
+        ll3 = LinkedList.listify_integer(3, True)
+        result_2 = sum_lists_ones_digit_at_tail(ll1, ll3)
+        self.assertEqual(result_2, LinkedList.listify_integer(620, True))
+
+        ll4 = LinkedList.listify_integer(405, True)
+        result_3 = sum_lists_ones_digit_at_tail(ll1, ll4)
+        self.assertEqual(result_3, LinkedList.listify_integer(1022, True))

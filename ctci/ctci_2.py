@@ -295,7 +295,7 @@ def delete_middle_node(n: Node, verbose: bool = False) -> None:
 # Input: (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
 # Output: 2 -> 1 -> 9. That is, 912.
 def sum_lists_ones_digit_at_head(
-    linked_1: LinkedList, linked_2: LinkedList
+    linked_1: LinkedList, linked_2: LinkedList, returned_forwards: bool = False
 ) -> LinkedList:
     """Given linked lists that represent the digits of a positive integer with the ones place at the head,
     return the sum.
@@ -303,9 +303,11 @@ def sum_lists_ones_digit_at_head(
     Args:
         linked_1 (LinkedList): first integer to be added, e.g. the integer 617 becomes 7 -> 1 -> 6
         linked_2 (LinkedList): second integer to be added, e.g. the integer 295 becomes 5 -> 9 -> 2
+        returned_forwards (bool): whether to return the digits of the result in forward or backward order. If True,
+          the result 42 will be returned as 4 -> 2 instead of 2 -> 4.
 
     Returns:
-        LinkedList: sum of the two integers, e.g. the integer 912 becomes 2 -> 1 -> 9
+        LinkedList: sum of the two integers with each digit as an individual Node.
 
     Raises:
         ValueError: if the value of a Node in either LinkedList is not an integer
@@ -313,6 +315,8 @@ def sum_lists_ones_digit_at_head(
     >>> l1, l2 = LinkedList.listify_integer(617), LinkedList.listify_integer(295)
     >>> sum_lists_ones_digit_at_head(l1, l2)
     <LinkedList head=<Node value=2 next.value=1> tail=<Node value=9 next=None>>
+    >>> sum_lists_ones_digit_at_head(l1, l2, True)
+    <LinkedList head=<Node value=9 next.value=1> tail=<Node value=2 next=None>>
     """
     pointer_1 = linked_1.head
     pointer_2 = linked_2.head
@@ -336,7 +340,10 @@ def sum_lists_ones_digit_at_head(
         if not result:
             result = LinkedList(Node(digit))
         else:
-            result.append(Node(digit))
+            if returned_forwards:
+                result.prepend(Node(digit))
+            else:
+                result.append(Node(digit))
         carried_one = 1 if digit_sum > 9 else 0
         pointer_1 = pointer_1.next if pointer_1 else None
         pointer_2 = pointer_2.next if pointer_2 else None
@@ -348,6 +355,30 @@ def sum_lists_ones_digit_at_head(
 # EXAMPLE
 # Input: (6 -> 1 -> 7) + (2 -> 9 -> 5). That is, 617 + 295.
 # Output:9 -> 1 -> 2. That is, 912.
+def sum_lists_ones_digit_at_tail(
+    linked_1: LinkedList, linked_2: LinkedList
+) -> LinkedList:
+    """Given equal length linked lists representing positive integers with the ones digit at tail, return sum as a
+    linked list.
+    Args:
+        linked_1 (LinkedList): first integer to be added, e.g. the integer 617 becomes 6 -> 1 -> 7
+        linked_2 (LinkedList): second integer to be added, e.g. the integer 295 becomes 2 -> 9 -> 5
+
+    Returns:
+        LinkedList: sum of the two integers, e.g. the integer 912 becomes 9 -> 1 -> 2
+
+    Raises:
+        ValueError: if the value of a Node in either input LinkedList is not an integer
+
+    >>> l1, l2 = LinkedList.listify_integer(617, True), LinkedList.listify_integer(295, True)
+    >>> sum_lists_ones_digit_at_tail(l1, l2)
+    <LinkedList head=<Node value=9 next.value=1> tail=<Node value=2 next=None>>
+    """
+    # Simple: reverse both inputs, use same functionality from before
+    return sum_lists_ones_digit_at_head(
+        reversed(linked_1), reversed(linked_2), returned_forwards=True
+    )
+    # Complex: add from left to right, but "look ahead" for whether a carried 1 will be needed
 
 
 def generate_fruits_ll(length: int = 10, verbose: bool = False) -> LinkedList:
