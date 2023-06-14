@@ -42,7 +42,10 @@ class Ctci2(unittest.TestCase):
 
     def test_2_1(self, verbose: bool = False):
         ll = generate_fruits_ll(8, verbose=verbose)
-        ll.extend([Node(fruit) for fruit in ["apple", "apple", "honeydew", "grapefruit"]], verbose=verbose)
+        ll.extend(
+            [Node(fruit) for fruit in ["apple", "apple", "honeydew", "grapefruit"]],
+            verbose=verbose,
+        )
         if verbose:
             print("2.1 Remove duplicates")
             ll.traverse_and_print()

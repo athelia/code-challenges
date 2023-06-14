@@ -195,7 +195,7 @@ class LinkedList:
 
 
 def listify_integer(i: int, stored_forwards: bool = False) -> LinkedList:
-    """ Given an integer, convert it into a LinkedList of the digits.
+    """Given an integer, convert it into a LinkedList of the digits.
 
     Args:
         i (int): the integer to convert
@@ -232,7 +232,7 @@ def listify_integer(i: int, stored_forwards: bool = False) -> LinkedList:
 # Input: the node c from the linked list a -> b -> c -> d -> e -> f
 # Result: nothing is returned, but the new linked list looks like a -> b -> d -> e -> f
 def delete_middle_node(n: Node, verbose: bool = False) -> None:
-    """ 'Delete' a middle node from a linked list by reassigning the value and .next. Does not work for tail node."""
+    """'Delete' a middle node from a linked list by reassigning the value and .next. Does not work for tail node."""
     n.value, n.next = n.next.value, n.next.next
     if verbose:
         print(f"Deleted node")
