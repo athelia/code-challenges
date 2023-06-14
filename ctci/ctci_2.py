@@ -194,6 +194,37 @@ class LinkedList:
         return None
 
 
+def listify_integer(i: int, stored_forwards: bool = False) -> LinkedList:
+    """ Given an integer, convert it into a LinkedList of the digits.
+
+    Args:
+        i (int): the integer to convert
+        stored_forwards (bool): which digit should be at the head. If True, the ones digit will be the tail.
+
+    Returns:
+        LinkedList: the integer converted to a LinkedList
+
+    >>> listify_integer(123)
+    <LinkedList head=<Node value=3 next.value=2> tail=<Node value=1 next=None>>
+    >>> listify_integer(123, True)
+    <LinkedList head=<Node value=1 next.value=2> tail=<Node value=3 next=None>>
+    """
+    result = None
+    while i > 0:
+        new_node = Node(i % 10)
+        i = i // 10
+        if not result:
+            result = LinkedList(new_node)
+        elif stored_forwards:
+            # If we want the head to end up as the largest digit, we must push new digits to the front
+            result.prepend(new_node)
+        else:
+            # Otherwise new digits should come afterwards
+            result.append(new_node)
+    return result
+    # TODO: write this recursively
+
+
 # 2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
 # the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
 # that node.
