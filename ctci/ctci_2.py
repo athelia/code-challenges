@@ -184,22 +184,17 @@ class LinkedList:
         return result
         # TODO: write this recursively
 
-    # - CTCI 2.1 + follow up, perhaps
-    #     - **Remove Dups**: Write code to remove duplicates from an unsorted linked list.
-    #     - FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
+    # 2.1 Remove Dups: Write code to remove duplicates from an unsorted linked list.
     #     - Hints: #9, #40
     # noinspection PyUnresolvedReferences
     def remove_dupes(self) -> None:
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
         >>> n = Node('apple')
-
         >>> l = LinkedList(head=Node(value='apple', nxt=Node(value='berry', nxt=n)), tail=n, verbose=True)
         Created LinkedList head=<Node value=apple next.value=berry> tail=<Node value=apple next=None>
-
         >>> l.remove_dupes()
         Deleting node value apple
-
         >>> l.traverse_and_print()
         apple
         berry
@@ -222,12 +217,31 @@ class LinkedList:
                 seen.add(current.next.value)
             current = current.next
 
+    # 2.1 FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
     def remove_dupes_bufferless(self) -> None:
-        pass
-        # for each node, search for a duplicate -> O(n^2)
-        # current = self.head
-        # while current:
+        """For each node, search for a duplicate -> O(n^2)
+        >>> ll = generate_fruits_ll(3)
+        >>> ll.extend([Node(fruit) for fruit in ['apple', 'zulu', 'berry', 'apple', 'cherry', 'yankee', 'xylophone']])
+        >>> ll.remove_dupes_bufferless()
+        >>> ll.traverse_and_print()
+        apple
+        berry
+        cherry
+        zulu
+        yankee
+        xylophone
+        """
+        current = self.head
+        while current:
+            nested = current
+            while nested:
+                # __eq__ for Nodes is True when values are equivalent
+                if nested.next == current:
+                    nested.next = nested.next.next
+                nested = nested.next
+            current = current.next
 
+    # 2.2
     def return_kth_to_last(self, k: int) -> Node:
         """Given a singly-linked list, return the kth to last element.
         >>> n = Node('dandelion')
@@ -268,9 +282,71 @@ class LinkedList:
     # Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
     # Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
     def partition(self, p: int) -> None:
+        # WIP - cannot figure out the algorithm. Next: check hints
+        left, right = self.head, self.head
+        while left.value:
+            if right.value > p > left.value:
+                right.next.value, right.value = right.value, right.next.value
+            left = left.next
+        return None
+
+    # 2.6 Palindrome: Implement a function to check if a linked list is a palindrome.
+    def is_palindrome(self) -> bool:
+        """Check if LL is a palindrome.
+        >>> ll1 = LinkedList.listify_integer(13531)
+        >>> ll1.is_palindrome()
+        True
+        >>> ll2 = LinkedList.listify_integer(13530)
+        >>> ll2.is_palindrome()
+        False
+        """
+        if self.get_length() < 2:
+            return True
+
+        # find midpoint
+        slow, fast = self.head, self.head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # reverse [midpoint:] of LL
+        new_previous = None
+        current = slow
+        while current:
+            new_next = current.next
+            current.next = new_previous
+            new_previous = current
+            current = new_next
+
+        # compare nodes in each LL, starting at head and reversed head (formerly the tail)
+        original_node = self.head
+        reversed_node = new_previous  # current has become None to exit loop
+        while original_node and reversed_node:
+            # __eq__ checks Node value
+            if original_node != reversed_node:
+                return False
+            original_node, reversed_node = original_node.next, reversed_node.next
+        return True
+
+    # 2.7 Intersection: Given two (singly) linked lists, determine if the two lists intersect. Return the inter-
+    # secting node. Note that the intersection is defined based on reference, not value. That is, if the kth
+    # node of the first linked list is the exact same node (by reference) as the jth node of the second
+    # linked list, then they are intersecting.
+    def intersects(self, other: "LinkedList") -> Optional[Node]:
+        # First populate all the ids of one LL into a set
+        ids = set()
         current = self.head
         while current:
+            ids.add(id(current))
             current = current.next
+
+        # Then check all the ids of the other LL against the set
+        other_node = other.head
+        while other_node:
+            other_id = id(other_node)
+            if other_id in ids:
+                return other_node
+            other_node = other_node.next
         return None
 
 
@@ -350,7 +426,7 @@ def sum_lists_ones_digit_at_head(
     return result
 
 
-# FOLLOW UP
+# 2.5 FOLLOW UP
 # Suppose the digits are stored in forward order. Repeat the above problem.
 # EXAMPLE
 # Input: (6 -> 1 -> 7) + (2 -> 9 -> 5). That is, 617 + 295.
