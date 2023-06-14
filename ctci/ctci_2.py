@@ -7,6 +7,13 @@ class Node:
         self.value = value
         self.next = nxt
 
+    def __eq__(self, other: Any) -> bool:
+        """Equivalence for Nodes compares only the value stored in the Node, not whatever it may be linked to."""
+        return type(other) is Node and other.value == self.value
+
+    def __ne__(self, other: Any) -> bool:
+        return not self == other
+
     def __repr__(self) -> str:
         return f"<Node value={self.value}" + (
             f" next={self.next}>"
@@ -23,8 +30,37 @@ class LinkedList:
         if verbose:
             print(f"Created LinkedList head={self.head} tail={self.tail}")
 
+    def __eq__(self, other: Any) -> bool:
+        """A LinkedList is equivalent to another if they have the same sequence of values."""
+        if type(other) is not LinkedList:
+            return False
+        current = self.head
+        other_current = other.head
+        while current or other_current:
+            if current != other_current:
+                return False
+            else:
+                current = current.next
+                other_current = other_current.next
+        return True
+
+    def __ne__(self, other: Any) -> bool:
+        return not self == other
+
     def __repr__(self) -> str:
         return f"<LinkedList head={self.head} tail={self.tail}>"
+
+    def __reversed__(self) -> "LinkedList":
+        """Easy method using already-defined prepend."""
+        current = self.head
+        result = None
+        while current:
+            if not result:
+                result = LinkedList(Node(current.value))
+            else:
+                result.prepend(Node(current.value))
+            current = current.next
+        return result
 
     def traverse_and_print(self) -> None:
         current = self.head
