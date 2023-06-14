@@ -1,4 +1,11 @@
-from ctci_2 import Node, LinkedList, delete_middle_node, generate_fruits_ll, sum_lists_same_length
+from ctci_2 import (
+    Node,
+    LinkedList,
+    delete_middle_node,
+    generate_fruits_ll,
+    sum_lists_ones_digit_at_head,
+    listify_integer,
+)
 import unittest
 
 
@@ -86,18 +93,18 @@ class Ctci2(unittest.TestCase):
         if verbose:
             print("2.5 Sum lists")
             print("v1: head = ones digit, same length")
-        ll1 = LinkedList(Node(7))
-        ll1.extend([Node(1), Node(6)], verbose=verbose)
-        ll2 = LinkedList(Node(5))
-        ll2.extend([Node(9), Node(2)], verbose=verbose)
-        result = sum_lists_same_length(ll1, ll2)
+        ll1 = listify_integer(617)
+        ll2 = listify_integer(295)
+        result = sum_lists_ones_digit_at_head(ll1, ll2)
+        self.assertEqual(result, listify_integer(912))
         self.assertEqual(2, result.head.value)
         self.assertEqual(1, result.head.next.value)
         self.assertEqual(9, result.tail.value)
 
         # 7 -> 1 -> 6 + 3 = 0 -> 2 -> 6
-        ll3 = LinkedList(Node(3))
-        result_2 = sum_lists_same_length(ll1, ll3)
-        self.assertEqual(0, result.head.value)
-        self.assertEqual(2, result.head.next.value)
-        self.assertEqual(6, result.tail.value)
+        ll3 = listify_integer(3)
+        result_2 = sum_lists_ones_digit_at_head(ll1, ll3)
+        self.assertEqual(result_2, listify_integer(620))
+        self.assertEqual(0, result_2.head.value)
+        self.assertEqual(2, result_2.head.next.value)
+        self.assertEqual(6, result_2.tail.value)

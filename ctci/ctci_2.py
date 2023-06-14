@@ -243,11 +243,26 @@ def delete_middle_node(n: Node, verbose: bool = False) -> None:
 # digit. The digits are stored in reverse order, such that the Vs digit is at the head of the list. Write a
 # function that adds the two numbers and returns the sum as a linked list.
 # EXAMPLE
-# Input: ( 7 - > 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+# Input: (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
 # Output: 2 -> 1 -> 9. That is, 912.
-def sum_lists_same_length(linked_1: LinkedList, linked_2: LinkedList) -> LinkedList:
-    """ Given linked lists that represent the digits of an integer, stored ones place at the head, return the sum.
-        Assumes that both linked lists have the same number of digits.
+def sum_lists_ones_digit_at_head(
+    linked_1: LinkedList, linked_2: LinkedList
+) -> LinkedList:
+    """Given linked lists that represent the digits of a positive integer, stored ones place at the head, return the sum.
+
+    Args:
+        linked_1 (LinkedList): first integer to be added, e.g. the integer 617 becomes 7 -> 1 -> 6
+        linked_2 (LinkedList): second integer to be added, e.g. the integer 295 becomes 5 -> 9 -> 2
+
+    Returns:
+        LinkedList: sum of the two integers, e.g. the integer 912 becomes 2 -> 1 -> 9
+
+    Raises:
+        ValueError: if the value of a Node in either LinkedList is not an integer
+
+    >>> l1, l2 = listify_integer(617), listify_integer(295)
+    >>> sum_lists_ones_digit_at_head(l1, l2)
+    <LinkedList head=<Node value=2 next.value=1> tail=<Node value=9 next=None>>
     """
     pointer_1 = linked_1.head
     pointer_2 = linked_2.head
@@ -256,6 +271,16 @@ def sum_lists_same_length(linked_1: LinkedList, linked_2: LinkedList) -> LinkedL
     while pointer_1 or pointer_2:
         p1_value = pointer_1.value if pointer_1 else 0
         p2_value = pointer_2.value if pointer_2 else 0
+        if type(p1_value) is not int:
+            try:
+                p1_value = int(p1_value)
+            except ValueError:
+                raise ValueError(f"{p1_value} must be an integer")
+        elif type(p2_value) is not int:
+            try:
+                p2_value = int(p2_value)
+            except ValueError:
+                raise ValueError(f"{p2_value} must be an integer")
         digit_sum = p1_value + p2_value + carried_one
         digit = digit_sum % 10
         if not result:
