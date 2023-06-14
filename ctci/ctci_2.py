@@ -322,7 +322,7 @@ def sum_lists_ones_digit_at_head(
     pointer_2 = linked_2.head
     carried_one = 0
     result = None
-    while pointer_1 or pointer_2:
+    while pointer_1 or pointer_2 or carried_one:
         p1_value = pointer_1.value if pointer_1 else 0
         p2_value = pointer_2.value if pointer_2 else 0
         if type(p1_value) is not int:
