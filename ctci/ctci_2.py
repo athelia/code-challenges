@@ -231,7 +231,7 @@ def sum_lists_same_length(linked_1: LinkedList, linked_2: LinkedList) -> LinkedL
             result = LinkedList(Node(digit))
         else:
             result.append(Node(digit))
-        carried_one = 1 if digit_sum > 10 else 0
+        carried_one = 1 if digit_sum > 9 else 0
         pointer_1 = pointer_1.next if pointer_1 else None
         pointer_2 = pointer_2.next if pointer_2 else None
     return result
