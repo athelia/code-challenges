@@ -96,18 +96,18 @@ class Ctci2(unittest.TestCase):
         if verbose:
             print("2.5 Sum lists")
             print("v1: head = ones digit, same length")
-        ll1 = listify_integer(617)
-        ll2 = listify_integer(295)
+        ll1 = LinkedList.listify_integer(617)
+        ll2 = LinkedList.listify_integer(295)
         result = sum_lists_ones_digit_at_head(ll1, ll2)
-        self.assertEqual(result, listify_integer(912))
+        self.assertEqual(result, LinkedList.listify_integer(912))
         self.assertEqual(2, result.head.value)
         self.assertEqual(1, result.head.next.value)
         self.assertEqual(9, result.tail.value)
 
         # 7 -> 1 -> 6 + 3 = 0 -> 2 -> 6
-        ll3 = listify_integer(3)
+        ll3 = LinkedList.listify_integer(3)
         result_2 = sum_lists_ones_digit_at_head(ll1, ll3)
-        self.assertEqual(result_2, listify_integer(620))
+        self.assertEqual(result_2, LinkedList.listify_integer(620))
         self.assertEqual(0, result_2.head.value)
         self.assertEqual(2, result_2.head.next.value)
         self.assertEqual(6, result_2.tail.value)

@@ -142,10 +142,53 @@ class LinkedList:
             current = current.next
         return length
 
+    def reverse(self) -> Node:
+        """Implements reversal when no prepend method is defined. Returns head of the reversed list."""
+        current = self.head
+        new_previous = None
+        while current:
+            new_current = current.next
+            current.next = new_previous
+            new_previous = current
+            current = new_current
+        return new_previous
+
+    @staticmethod
+    def listify_integer(i: int, stored_forwards: bool = False) -> "LinkedList":
+        """Given an integer, convert it into a LinkedList of the digits.
+
+        Args:
+            i (int): the integer to convert
+            stored_forwards (bool): which digit should be at the head. If True, the ones digit will be the tail.
+
+        Returns:
+            LinkedList: the integer converted to a LinkedList
+
+        >>> LinkedList.listify_integer(123)
+        <LinkedList head=<Node value=3 next.value=2> tail=<Node value=1 next=None>>
+        >>> LinkedList.listify_integer(123, True)
+        <LinkedList head=<Node value=1 next.value=2> tail=<Node value=3 next=None>>
+        """
+        result = None
+        while i > 0:
+            new_node = Node(i % 10)
+            i = i // 10
+            if not result:
+                result = LinkedList(new_node)
+            elif stored_forwards:
+                # If we want the head to end up as the largest digit, we must push new digits to the front
+                result.prepend(new_node)
+            else:
+                # Otherwise new digits should come afterwards
+                result.append(new_node)
+        return result
+        # TODO: write this recursively
+
     # - CTCI 2.1 + follow up, perhaps
     #     - **Remove Dups**: Write code to remove duplicates from an unsorted linked list.
     #     - FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed?
     #     - Hints: #9, #40
+    # noinspection PyUnresolvedReferences
     def remove_dupes(self) -> None:
         """Given the head of an unsorted linked list, remove duplicate nodes.
 
@@ -188,7 +231,8 @@ class LinkedList:
     def return_kth_to_last(self, k: int) -> Node:
         """Given a singly-linked list, return the kth to last element.
         >>> n = Node('dandelion')
-        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=Node(value='chrysanthemum', nxt=n))), tail=n, verbose=True)
+        >>> l = LinkedList(Node('aster', nxt=Node(value='begonia', nxt=Node(value='chrysanthemum', nxt=n))), tail=n,\
+        verbose=True)
         Created LinkedList head=<Node value=aster next.value=begonia> tail=<Node value=dandelion next=None>
         >>> l.return_kth_to_last(2)
         <Node value=chrysanthemum next.value=dandelion>
@@ -230,37 +274,6 @@ class LinkedList:
         return None
 
 
-def listify_integer(i: int, stored_forwards: bool = False) -> LinkedList:
-    """Given an integer, convert it into a LinkedList of the digits.
-
-    Args:
-        i (int): the integer to convert
-        stored_forwards (bool): which digit should be at the head. If True, the ones digit will be the tail.
-
-    Returns:
-        LinkedList: the integer converted to a LinkedList
-
-    >>> listify_integer(123)
-    <LinkedList head=<Node value=3 next.value=2> tail=<Node value=1 next=None>>
-    >>> listify_integer(123, True)
-    <LinkedList head=<Node value=1 next.value=2> tail=<Node value=3 next=None>>
-    """
-    result = None
-    while i > 0:
-        new_node = Node(i % 10)
-        i = i // 10
-        if not result:
-            result = LinkedList(new_node)
-        elif stored_forwards:
-            # If we want the head to end up as the largest digit, we must push new digits to the front
-            result.prepend(new_node)
-        else:
-            # Otherwise new digits should come afterwards
-            result.append(new_node)
-    return result
-    # TODO: write this recursively
-
-
 # 2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but
 # the first and last node, not necessarily the exact middle) of a singly linked list, given only access to
 # that node.
@@ -284,7 +297,8 @@ def delete_middle_node(n: Node, verbose: bool = False) -> None:
 def sum_lists_ones_digit_at_head(
     linked_1: LinkedList, linked_2: LinkedList
 ) -> LinkedList:
-    """Given linked lists that represent the digits of a positive integer, stored ones place at the head, return the sum.
+    """Given linked lists that represent the digits of a positive integer with the ones place at the head,
+    return the sum.
 
     Args:
         linked_1 (LinkedList): first integer to be added, e.g. the integer 617 becomes 7 -> 1 -> 6
@@ -296,7 +310,7 @@ def sum_lists_ones_digit_at_head(
     Raises:
         ValueError: if the value of a Node in either LinkedList is not an integer
 
-    >>> l1, l2 = listify_integer(617), listify_integer(295)
+    >>> l1, l2 = LinkedList.listify_integer(617), LinkedList.listify_integer(295)
     >>> sum_lists_ones_digit_at_head(l1, l2)
     <LinkedList head=<Node value=2 next.value=1> tail=<Node value=9 next=None>>
     """
