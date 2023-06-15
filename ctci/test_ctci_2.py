@@ -90,6 +90,15 @@ class Ctci2(unittest.TestCase):
         if verbose:
             ll.traverse_and_print()
 
+    def test_2_4(self):
+        ll1 = LinkedList.listify_integer(3585921, True)
+        ll1.partition(5)
+        self.assertEqual(LinkedList.listify_integer(3215958, True), ll1)
+
+        ll2 = LinkedList.listify_integer(1295853, True)
+        ll2.partition(5)
+        self.assertEqual(LinkedList.listify_integer(1235859, True), ll2)
+
     def test_2_5(self, verbose: bool = False):
         # Input: ( 7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
         # Output: 2 -> 1 -> 9. That is, 912.

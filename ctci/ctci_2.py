@@ -279,15 +279,24 @@ class LinkedList:
     # to be after the elements less than x (see below). The partition element x can appear anywhere in the
     # "right partition"; it does not need to appear between the left and right partitions.
     # EXAMPLE
-    # Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition = 5]
-    # Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
+    # Input: 3 -> 5 -> 8 -> 5 -> 9 -> 2 -> 1 [partition = 5]
+    # Output: 3 -> 1 -> 2 -> 9 -> 5 -> 5 -> 8
     def partition(self, p: int) -> None:
-        # WIP - cannot figure out the algorithm. Next: check hints
         left, right = self.head, self.head
-        while left.value:
-            if right.value > p > left.value:
-                right.next.value, right.value = right.value, right.next.value
-            left = left.next
+        # Find the first value to go on the right side of the partition
+        while right.value < p:
+            right = right.next
+        # Now start moving both pointers
+        while left and right:
+            # Keep the right moving until a value that should be on the left is found
+            if right.value >= p:
+                right = right.next
+            else:
+                # Now move the left pointer to the edge of the partition, then one beyond
+                while left and left.value < p:
+                    left = left.next
+                # Swap the left and right values
+                left.value, right.value = right.value, left.value
         return None
 
     # 2.6 Palindrome: Implement a function to check if a linked list is a palindrome.
