@@ -136,3 +136,26 @@ class Ctci2(unittest.TestCase):
         ll4 = LinkedList.listify_integer(405, True)
         result_3 = sum_lists_ones_digit_at_tail(ll1, ll4)
         self.assertEqual(result_3, LinkedList.listify_integer(1022, True))
+
+    def test_2_6(self):
+        ll1 = generate_fruits_ll(3)  # apple, berry, cherry
+        ll1.extend([Node(fruit) for fruit in ["berry", "apple"]])
+        self.assertTrue(ll1.is_palindrome())
+        ll1.append(Node("apple"))
+        self.assertFalse(ll1.is_palindrome())
+
+        ll2 = LinkedList(Node("apple"))
+        self.assertTrue(ll2.is_palindrome())
+        ll2.append(Node("apple"))
+        self.assertTrue(ll2.is_palindrome())
+
+    def test_2_7(self):
+        beet = Node("beet")
+        ll1 = LinkedList(Node("arugula"))
+        ll1.append(beet)
+        ll2 = LinkedList(Node("asparagus"))
+        ll2.append(beet)
+        self.assertEqual(beet, ll1.intersects_at(ll2))
+
+        ll3 = generate_fruits_ll(3)
+        self.assertIsNone(ll3.intersects_at(ll1))

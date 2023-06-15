@@ -332,7 +332,7 @@ class LinkedList:
     # secting node. Note that the intersection is defined based on reference, not value. That is, if the kth
     # node of the first linked list is the exact same node (by reference) as the jth node of the second
     # linked list, then they are intersecting.
-    def intersects(self, other: "LinkedList") -> Optional[Node]:
+    def intersects_at(self, other: "LinkedList") -> Optional[Node]:
         # First populate all the ids of one LL into a set
         ids = set()
         current = self.head
