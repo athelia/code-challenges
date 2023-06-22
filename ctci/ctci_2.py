@@ -69,8 +69,12 @@ class LinkedList:
             current = current.next
 
     def append(self, node: Node, verbose: bool = False) -> None:
-        self.tail.next = node
-        self.tail = node
+        # If linked list is empty
+        if not self.tail:
+            self.head = self.tail = node
+        else:
+            self.tail.next = node
+            self.tail = node
         if verbose:
             print(f"Appended {node}")
 
