@@ -218,7 +218,30 @@ class SetOfStacks:
 
 # CTCI 3.4
 class QueueFromStacks:
-    pass
+    def __init__(self, initial: Any) -> None:
+        self.stack_newest = StackLL(initial)
+        self.stack_oldest = StackLL(None)
+
+    def push(self, value) -> None:
+        self.stack_newest.push(Node(value))
+
+    def stack_shift(self) -> None:
+        if self.stack_newest.is_empty():
+            current = self.stack_oldest.top
+            # stack = self.stack_oldest
+            transfer_stack = self.stack_newest
+        else:
+            current = self.stack_newest.top
+            # stack = self.stack_newest
+            transfer_stack = self.stack_oldest
+        while current:
+            transfer_stack.push(current)
+            current = current.next
+
+    def pop(self) -> Node:
+        if self.stack_oldest.is_empty():
+            self.stack_shift()
+        return self.stack_oldest.pop()
 
 
 # CTCI 3.6
