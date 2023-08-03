@@ -1,5 +1,5 @@
 # CTCI Chapter 4, Trees and Graphs
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 
 class BinaryTreeNode:
@@ -92,15 +92,48 @@ class Heap:
 
 # 4.2 sorted array to BST
 """
-[a, b, c, d, e, f, g]
+[a, b, c, d, e, f, g] len = 7 max_i = 6 mid = 3
        d
   b         f
 a   c     e   g
 
-recursively: get the midpoint +1 and make that the root
+[a, b, c, d, e, f] len = 6 max_i = 5 mid = 3
+       d
+  b         f
+a   c     e
+
+recursively: get the midpoint (len // 2) and make that the root
 get the lower midpoint and make that the left child
 get the upper midpoint and make that the right child
+pass list slices if we care more about readability than runtime, otherwise use pointers
+base case:
 """
+
+
+# def convert_sorted_list_to_bst(nums: List[int]) -> BinaryTreeNode:
+#     upper_bound = len(nums) - 1
+#     lower_bound = 0
+#     midpoint = len(nums) // 2
+#     current = root = BinaryTreeNode(nums[midpoint])
+#     upper_midpoint = (upper_bound - midpoint) // 2 + 1
+#     lower_midpoint = (midpoint - lower_bound) // 2
+#     while upper_midpoint < upper_bound and lower_midpoint > lower_bound:
+#         current.left = BinaryTreeNode(nums[lower_midpoint])
+#         current.right = BinaryTreeNode(nums[upper_midpoint])
+#         upper_midpoint = (upper_bound - midpoint) // 2 + 1
+#         lower_midpoint = (midpoint - lower_bound) // 2
+#
+#     return root
+
+def recursive_make_bst(nums: List[int]) -> Optional[BinaryTreeNode]:
+    if not nums:
+        return
+
+    midpoint = len(nums) // 2
+    node = BinaryTreeNode(nums[midpoint])
+    node.left = recursive_make_bst(nums[:midpoint])
+    node.right = recursive_make_bst(nums[midpoint + 1:])
+    return node
 
 
 # 4.3 linked list of tree depths
@@ -122,8 +155,10 @@ def recursive_ll(parent):
     ...
     return recursive_ll(parent.left) + recursive_ll(parent.right)
 
-"""
+BFS -> iterative with a queue is simple
+keep track of the value of the node and its level
 
+"""
 
 # 4.4 check balanced
 """
@@ -148,7 +183,6 @@ def is_balanced(node):
             return node.right.left is None and node.right.right is None
 """
 
-
 # 4.5 check if BST
 """
 def is_bst(node):
@@ -164,7 +198,6 @@ def is_bst(node):
         return is_bst(node.left) and is_bst(node.right)
 """
 
-
 # 4.6 BST successor
 """
        4
@@ -178,7 +211,6 @@ if node d/n have a right child:
         if parent was a right child:
         ...repeat recursively. not exactly sure how to do this one
 """
-
 
 # 4.7 build order
 """
