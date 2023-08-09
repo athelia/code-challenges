@@ -133,7 +133,7 @@ def recursive_make_bst(nums: List[int]) -> Optional[BinaryTreeNode]:
     midpoint = len(nums) // 2
     node = BinaryTreeNode(nums[midpoint])
     node.left = recursive_make_bst(nums[:midpoint])
-    node.right = recursive_make_bst(nums[midpoint + 1:])
+    node.right = recursive_make_bst(nums[midpoint + 1:])  # fmt: skip
     return node
 
 
