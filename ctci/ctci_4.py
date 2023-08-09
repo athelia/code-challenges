@@ -125,6 +125,7 @@ base case:
 #
 #     return root
 
+
 def recursive_make_bst(nums: List[int]) -> Optional[BinaryTreeNode]:
     if not nums:
         return
